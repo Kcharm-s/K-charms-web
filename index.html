@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-CHARMS</title>
+
+<style>
+body{
+margin:0;
+font-family:Poppins;
+color:white;
+overflow-x:hidden;
+}
+
+/* ================= PARALLAX BACKGROUND ================= */
+.bg{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:200vh;
+background:linear-gradient(-45deg,#000,#3e2723,#111,#5d4037);
+background-size:400% 400%;
+animation:bg 12s ease infinite;
+z-index:-1;
+transform:translateZ(0);
+}
+
+@keyframes bg{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+/* PARALLAX MOVE */
+.parallax{
+transform:translateY(var(--scroll));
+transition:0.1s;
+}
+
+/* HEADER */
+.header{
+background:#3e2723;
+padding:15px;
+text-align:center;
+font-weight:bold;
+}
+
+/* MAKNA */
+.section{
+padding:20px;
+max-width:800px;
+margin:auto;
+text-align:center;
+}
+
+/* GAME */
+button{
+padding:10px;
+margin:5px;
+border:none;
+border-radius:10px;
+background:#ffb300;
+font-weight:bold;
+}
+
+input{
+padding:10px;
+border-radius:8px;
+border:none;
+width:80%;
+}
+
+/* SCORE */
+.score{
+position:fixed;
+top:10px;
+right:10px;
+background:#00000088;
+padding:10px;
+border-radius:10px;
+}
+
+/* MUSIC */
+.music{
+position:fixed;
+bottom:15px;
+right:15px;
+padding:12px;
+border-radius:50%;
+border:none;
+background:#ffb300;
+}
+
+/* EFFECT FLASH */
+.flash{
+animation:flash .3s;
+}
+
+@keyframes flash{
+0%{background:white}
+100%{background:transparent}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="header parallax">🔥 K-CHARMS PRO</div>
+
+<div class="score">Score: <span id="score">0</span></div>
+
+<!-- ================= MAKNA (TIDAK DIUBAH) ================= -->
+<div class="section parallax">
+
+<h2>Makna Jenang Kudus</h2>
+
+<p>Jenang Kudus melambangkan kehidupan yang manis, penuh harapan, dan keberkahan. Dari rasa dan prosesnya, kita belajar kesabaran dan keteguhan hati dalam menghadapi hidup.</p>
+
+<p>Teksturnya yang lembut mencerminkan sikap rendah hati, empati, dan keharmonisan dalam bersosial. Kita diajarkan untuk tidak hanya kuat, tetapi juga lembut dalam bersikap.</p>
+
+<p>Proses pembuatannya yang lama mengajarkan bahwa kesuksesan tidak instan, tetapi membutuhkan kerja keras, ketelitian, dan konsistensi.</p>
+
+<p>Jenang juga hadir dalam acara adat sebagai simbol doa, harapan, dan kebahagiaan, serta menjadi bagian penting dari identitas budaya Kudus.</p>
+
+<p>Karena itu, generasi muda perlu menjaga dan melestarikannya agar tradisi ini tetap hidup di tengah perkembangan zaman.</p>
+
+</div>
+
+<!-- ================= HANDMADE (TIDAK DIUBAH) ================= -->
+<div class="section parallax">
+
+<h2>Makna Handmade Jenangku 🧵</h2>
+
+<p>Jenang handmade dibuat dengan ketelatenan dan kesabaran, menghasilkan rasa khas yang tidak bisa digantikan oleh produksi massal.</p>
+
+<p>Prosesnya mencerminkan keaslian, kejujuran, dan dedikasi dalam berkarya tanpa jalan pintas.</p>
+
+<p>Setiap karya memiliki sentuhan pribadi pembuatnya, penuh usaha dan ketulusan yang memberi nilai lebih.</p>
+
+<p>Handmade juga mengajarkan bahwa hasil terbaik lahir dari proses yang sungguh-sungguh dan penuh hati.</p>
+
+</div>
+
+<!-- ================= GAME ================= -->
+<div class="section parallax">
+<h2>GAME 🎮</h2>
+
+<button onclick="quiz()">Quiz</button>
+<button onclick="tebak()">Tebak</button>
+<button onclick="puzzle()">Puzzle</button>
+
+<div id="game"></div>
+</div>
+
+<!-- MUSIC -->
+<audio id="bgm" loop>
+<source src="musik.mp3">
+</audio>
+
+<audio id="click"><source src="click.mp3"></audio>
+<audio id="ok"><source src="ok.mp3"></audio>
+<audio id="no"><source src="no.mp3"></audio>
+<audio id="win"><source src="win.mp3"></audio>
+
+<button class="music" onclick="music()">▶</button>
+
+<script>
+
+let score=0;
+
+/* SCORE */
+function add(){
+score+=10;
+document.getElementById("score").innerText=score;
+sound("ok");
+flash();
+}
+
+/* WRONG */
+function wrong(){
+sound("no");
+flash();
+}
+
+/* SOUND ENGINE */
+function sound(id){
+let s=document.getElementById(id);
+if(s){s.currentTime=0;s.play();}
+}
+
+/* FLASH EFFECT */
+function flash(){
+document.body.classList.add("flash");
+setTimeout(()=>document.body.classList.remove("flash"),300);
+}
+
+/* MUSIC FIX */
+let bgm=document.getElementById("bgm");
+function music(){
+if(bgm.paused) bgm.play();
+else bgm.pause();
+}
+
+/* AUTOPLAY FIX */
+document.addEventListener("click",()=>bgm.play(),{once:true});
+
+/* PARALLAX SCROLL */
+window.addEventListener("scroll",()=>{
+let y=window.scrollY;
+document.documentElement.style.setProperty('--scroll',y*0.2+'px');
+});
+
+/* GAME 1 */
+function quiz(){
+document.getElementById("game").innerHTML=`
+<h3>Jenang berasal dari?</h3>
+<button onclick="add()">Kudus</button>
+<button onclick="wrong()">Jakarta</button>`;
+}
+
+/* GAME 2 */
+function tebak(){
+document.getElementById("game").innerHTML=`
+<h3>J _ N A N G</h3>
+<input id="a">
+<button onclick="cek()">OK</button>`;
+}
+
+function cek(){
+if(a.value=="jenang"){add();sound("win");}
+else wrong();
+}
+
+/* GAME 3 */
+function puzzle(){
+document.getElementById("game").innerHTML=`
+<h3>N A J E N G</h3>
+<input id="b">
+<button onclick="cek2()">OK</button>`;
+}
+
+function cek2(){
+if(b.value=="jenang"){add();sound("win");}
+else wrong();
+}
+
+</script>
+
+</body>
+</html>
